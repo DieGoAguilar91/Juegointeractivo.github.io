@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Juego de Preguntas</title>
+	<link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+	<div class="banner">
+		<h1>Juego de Preguntas:
+			Modelos de calidad en el desarrollo de software
+		</h1>
+		<div id="temporizador"></div>
+	</div>
+
+	<div id="contenedor-de-preguntas"></div>
+	<button id="boton-iniciar" style="display:none;">Reiniciar Juego</button>
+	<div id="resultados"></div>
+
+    <script>
+		
+		function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+     const preguntas = [
+	{
+		pregunta: "¿Qué es un modelo de calidad de software?",
+		opciones: ["Un conjunto de malas prácticas para el ciclo de vida del software", "Una herramienta de hardware para mejorar la competitividad.", "Un conjunto de buenas prácticas para el ciclo de vida del software.", "Una metodología para el desarrollo de videojuegos."],
+		respuesta: "Un conjunto de buenas prácticas para el ciclo de vida del software.",
+		imagen: "software.gif"
+	},
+	{
+		pregunta: "¿Cuál es el propósito del modelo CMM?",
+		opciones: ["Evaluar la capacidad de una empresa para producir software de baja calidad.", "Determinar la capacidad de una empresa para producir software de alta calidad.", "Medir la velocidad de desarrollo de software en una empresa.", "Calcular el costo de producción de software."],
+		respuesta: "Determinar la capacidad de una empresa para producir software de alta calidad.",
+		imagen:"software2.gif"
+	},
+	{
+		pregunta: "¿Qué representa el nivel 3 en el modelo CMM?",
+		opciones: ["Incompleto.", "Realizado.", "Definido.", "Optimizado."],
+		respuesta: "Definido.",
+		imagen:"software3.gif"
+	},
+	{
+		pregunta: "¿Qué modelo se utiliza para evaluar y mejorar la capacidad y madurez de los procesos?",
+		opciones: ["ISO/IEC 25000.", "ISO/IEC 15504 (SPICE).", "CMMI.", "PSP."],
+		respuesta: "ISO/IEC 15504 (SPICE).",
+		imagen:"software4.gif"
+	},
+	{
+		pregunta: "¿Qué establece la norma ISO/IEC 15504-7?",
+		opciones: ["Un marco de trabajo para determinar la madurez de la organización.", "La cantidad de defectos permitidos en el software.", "Los precios estándar para el software en el mercado.", "Las regulaciones para el uso de software en dispositivos móviles."],
+		respuesta: "Un marco de trabajo para determinar la madurez de la organización.",
+		imagen:"software5.gif"
+	},
+	{
+		pregunta: "¿Cuál es una de las sub-características de la funcionalidad según la norma ISO/IEC 25000?",
+		opciones: ["Capacidad para ser analizado.", "Tolerancia a fallos.", "Adecuación.", "Utilización de recursos."],
+		respuesta: "Adecuación.",
+		imagen:"software6.gif"
+	},
+	{
+		pregunta: "¿Qué busca el PSP (Personal Software Process)?",
+		opciones: ["Mejorar la calidad del software desarrollado por equipos.", "Disminuir la calidad del software desarrollado por una persona.", "Mejorar la calidad del software desarrollado por una persona.", "Evaluar la capacidad de gestión de proyectos de software."],
+		respuesta: "Mejorar la calidad del software desarrollado por una persona.",
+		imagen:"software7.gif"
+	},
+	{
+		pregunta: "¿Qué caracteriza al TSP (Team Software Process)?",
+		opciones: ["Se enfoca en la mejora individual de los desarrolladores.", "Se fundamenta en el trabajo en equipo y prácticas de ingeniería avanzada.", "Establece un marco de trabajo para el personal no técnico.", "Se centra en la administración de la calidad a través de la eliminación tardía de defectos."],
+		respuesta: "Se fundamenta en el trabajo en equipo y prácticas de ingeniería avanzada.",
+		imagen:"software8.jpg"
+	},
+	{
+		pregunta: "¿Qué es CMMI según el glosario del documento?",
+		opciones: ["Un proceso personal del software.", "Un modelo para de madurez de capacidades aplicado al proceso del software.", "Un modelo para el mejoramiento del software.", "Un modelo de calidad para evaluar el software como producto."],
+		respuesta: "Un modelo para de madurez de capacidades aplicado al proceso del software.",
+		imagen:"software9.gif"
+	},
+	{
+		pregunta: "¿Qué relación existe entre CMM, TSP y PSP según el documento?",
+		opciones: ["CMM mejora la capacidad de la organización, TSP el rendimiento del equipo y PSP las habilidades individuales.", "CMM, TSP y PSP son lo mismo pero con diferentes nombres.", "PSP se enfoca en la organización, TSP en el equipo y CMM en el individuo.", "TSP mejora la capacidad de la organización, CMM el rendimiento del equipo y PSP las habilidades individuales."],
+		respuesta: "CMM mejora la capacidad de la organización, TSP el rendimiento del equipo y PSP las habilidades individuales.",
+		imagen:"software10.gif"
+	}
+
+];
+shuffle(preguntas);
+
+let indicePreguntaActual = 0;
+let respuestasCorrectas = 0;
+let respuestasIncorrectas = 0;
+let tiempoRestante = 300; // 5 minutos en segundos
+
+const contenedorPreguntas = document.getElementById("contenedor-de-preguntas");
+const botonIniciar = document.getElementById("boton-iniciar");
+const resultados = document.getElementById("resultados");
+const temporizador = document.getElementById("temporizador");
+
+botonIniciar.addEventListener("click", iniciarJuego);
+mostrarPregunta(indicePreguntaActual);
+
+function iniciarJuego() {
+	botonIniciar.style.display = "none";
+	indicePreguntaActual = 0;
+	respuestasCorrectas = 0;
+	respuestasIncorrectas = 0;
+	tiempoRestante = 300;
+	mostrarPregunta(indicePreguntaActual);
+    resultados.innerHTML = "";
+    temporizador.innerHTML = `
+		<img src="reloj.gif" alt="">
+		<p>Tiempo restante: ${tiempoRestante} segundos</p>
+	`;
+    setInterval(function() {
+        tiempoRestante--;
+        if (tiempoRestante <= 0) {
+            mostrarResultados();
+            botonIniciar.style.display = "block";
+        }
+        temporizador.innerHTML = `
+			<img src="reloj.gif" alt="" style="width: 80px;">
+			<p>Tiempo restante: ${tiempoRestante} segundos</p>
+		`;
+    }, 1000);
+	shuffle(preguntas);
+}
+
+
+function mostrarPregunta(indice) {
+  const pregunta = preguntas[indice];
+  const opciones = [...pregunta.opciones];
+  shuffle(opciones);
+	contenedorPreguntas.innerHTML = `
+		<div style="display: flex; align-items: center;">
+			<div>
+				<h2>${pregunta.pregunta}</h2>
+				<ul>
+					${pregunta.opciones.map((opcion, indice) => `
+						<li>
+							<input type="radio" name="respuesta" value="${opcion}" id="opcion-${indice}">
+							<label for="opcion-${indice}">${opcion}</label>
+						</li>
+					`).join("")}
+				</ul>
+				<button id="boton-enviar" onclick="verificarRespuesta()">Enviar</button>
+			</div>
+			<img src="${pregunta.imagen}" alt="Imagen de la pregunta" style="width: 250px; height: 250px; margin:auto; border-radius: 200px;">
+		</div>
+	`;
+}
+
+function verificarRespuesta() {
+	const opcionSeleccionada = document.querySelector('input[name="respuesta"]:checked').value;
+	if (opcionSeleccionada === preguntas[indicePreguntaActual].respuesta) {
+		respuestasCorrectas++;
+	} else {
+		respuestasIncorrectas++;
+	}
+	indicePreguntaActual++;
+	if (indicePreguntaActual < preguntas.length) {
+		mostrarPregunta(indicePreguntaActual);
+	} else {
+		mostrarResultados();
+		botonIniciar.style.display = "block";
+	}
+}
+
+function mostrarResultados() {
+	resultados.innerHTML = `
+		<h2>Resultados</h2>
+		<p>Preguntas respondidas: ${preguntas.length}</p>
+		<p>Respuestas correctas: ${respuestasCorrectas}</p>
+		<p>Respuestas incorrectas: ${respuestasIncorrectas}</p>
+	`;
+}
+let respuestas = [];
+
+function verificarRespuesta() {
+    const opcionSeleccionada = document.querySelector('input[name="respuesta"]:checked').value;
+    const preguntaActual = preguntas[indicePreguntaActual];
+    const respuestaCorrecta = preguntaActual.respuesta;
+    const respuestaSeleccionada = opcionSeleccionada;
+
+    let respuesta = {
+        pregunta: preguntaActual.pregunta,
+        opciones: preguntaActual.opciones,
+        respuestaCorrecta: respuestaCorrecta,
+        respuestaSeleccionada: respuestaSeleccionada
+    };
+
+    respuestas.push(respuesta);
+
+    if (opcionSeleccionada === preguntaActual.respuesta) {
+        respuestasCorrectas++;
+    } else {
+        respuestasIncorrectas++;
+    }
+    indicePreguntaActual++;
+    if (indicePreguntaActual < preguntas.length) {
+        mostrarPregunta(indicePreguntaActual);
+    } else {
+        mostrarResultados();
+        botonIniciar.style.display = "block";
+    }
+}
+
+function mostrarResultados() {
+    resultados.innerHTML = `
+        <h2>Resultados</h2>
+        <p>Preguntas respondidas: ${preguntas.length}</p>
+        <p>Respuestas correctas: ${respuestasCorrectas}</p> 
+        <p>Respuestas incorrectas: ${respuestasIncorrectas}</p>
+    `;
+
+    let resultadoPreguntas = "";
+
+    for (let i = 1; i < respuestas.length; i++) {
+        let respuesta = respuestas[i];
+        let estiloNegrilla = respuesta.respuestaSeleccionada === respuesta.respuestaCorrecta? "font-weight: bold;" : "font-weight: bold;";
+        let estiloColor = respuesta.respuestaSeleccionada === respuesta.respuestaCorrecta? "color: green;" : "color: red;";
+        resultadoPreguntas += `<p>${respuesta.pregunta}</p>`;
+        resultadoPreguntas += `<ul>`;
+        for (let j = 0; j < respuesta.opciones.length; j++) {
+            let opcion = respuesta.opciones[j];
+            let estiloOpcion = opcion === respuesta.respuestaSeleccionada? estiloNegrilla + estiloColor : "";
+            resultadoPreguntas += `<li style="${estiloOpcion}">${opcion}</li>`;
+        }
+        resultadoPreguntas += `</ul>`;
+        if (respuesta.respuestaSeleccionada!== respuesta.respuestaCorrecta) {
+            resultadoPreguntas += `<p>La respuesta correcta era: ${respuesta.respuestaCorrecta}</p>`;
+        }
+    }
+
+    resultados.innerHTML += resultadoPreguntas;
+}
+iniciarJuego();
+    </script>
+</body>
+</html>

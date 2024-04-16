@@ -1,0 +1,137 @@
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* Comica */
+* {
+  font-family: "Comic Neue", cursive;
+  font-weight: 300;
+  font-style: normal;
+}
+
+body {
+  background-image: linear-gradient(to right, #9dd69f, #4CAF50, #9dd69f);
+  font-family: 'Comic Sans MS', cursive;
+}
+
+.banner {
+  display: flex;
+}
+
+.banner h1 {
+  text-align: center;
+  width: 80%;
+  color: #fff;
+  font-size: 3rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+#temporizador {
+  text-align: center;
+  width: 20%;
+  background-color: #fff;
+  border: 2px solid #4CAF50;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+#contenedor-de-preguntas {
+  background-color: #fff;
+  border: 2px solid #4CAF50;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px auto;
+  width: 80%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+#contenedor-de-preguntas h2 {
+  color: #4CAF50;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+
+}
+
+#contenedor-de-preguntas ul {
+  list-style: none;
+  padding: 0;
+}
+
+#contenedor-de-preguntas li {
+  margin-bottom: 10px;
+}
+
+#contenedor-de-preguntas input[type="radio"] {
+  accent-color: #4CAF50;
+}
+
+#contenedor-de-preguntas label {
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+#boton-iniciar {
+  background-color: #2b6b2d;
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 10px 20px;
+  margin: auto;
+  transition: background-color 0.3s ease;
+}
+
+#boton-iniciar:hover {
+  background-color: #027c06;
+}
+
+#boton-enviar {
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 10px 20px;
+  margin-top: 20px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+#resultados {
+  background-color: #fff;
+  border: 2px solid #4CAF50;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px auto;
+  width: 80%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+#resultados h2 {
+  color: #4CAF50;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+#resultados p {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+#boton-enviar::before {
+	content: "👍";
+	margin-right: 5px;
+  }
